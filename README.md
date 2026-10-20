@@ -45,7 +45,7 @@ pip install -r requirements.txt
 claude mcp add my-profile --env MCP_TRANSPORT=stdio -- python -m app.server
 
 # Or as an HTTP server (remote surfaces):
-python -m app.server        # http://0.0.0.0:8080/mcp, health at /health
+python -m app.server        # http://127.0.0.1:8080/mcp, health at /health
 ```
 
 Then fill in the seven files under `profile/` — each explains what belongs in
@@ -53,7 +53,12 @@ it — and ask your agent to `get_profile`.
 
 **If you expose this over HTTP: put real access control in front** (an
 authenticating proxy or tunnel). Your profile is personal by definition; the
-server itself does no auth.
+server itself does no auth, which is why it listens on localhost unless a
+hosting platform sets `PORT` (Railway, Render) or you set `MCP_HOST=0.0.0.0`
+yourself (Docker, Fly.io and others that do not set `PORT`).
+
+`requirements.txt` pins an exact version on purpose: that lets Dependabot and
+other scanners match it against known vulnerabilities. Bump it deliberately.
 
 ## Background
 
