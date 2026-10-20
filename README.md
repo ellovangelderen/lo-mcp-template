@@ -54,7 +54,8 @@ it — and ask your agent to `get_profile`.
 **If you expose this over HTTP: put real access control in front** (an
 authenticating proxy or tunnel). Your profile is personal by definition; the
 server itself does no auth, which is why it listens on localhost unless a
-hosting platform sets `PORT` or you set `MCP_HOST=0.0.0.0` yourself.
+hosting platform sets `PORT` (Railway, Render) or you set `MCP_HOST=0.0.0.0`
+yourself (Docker, Fly.io and others that do not set `PORT`).
 
 `requirements.txt` pins an exact version on purpose: that lets Dependabot and
 other scanners match it against known vulnerabilities. Bump it deliberately.
