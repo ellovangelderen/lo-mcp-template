@@ -15,8 +15,9 @@ Run locally over stdio (simplest, for Claude Code on the same machine):
 
 Or over HTTP (for remote surfaces; put real access control in front):
 
-    MCP_HOST=127.0.0.1 python -m app.server
+    python -m app.server
     # listens on http://127.0.0.1:8080/mcp, health at /health
+    # all interfaces only when PORT is set (hosting platform) or MCP_HOST=0.0.0.0
 """
 import os
 from pathlib import Path
@@ -114,9 +115,12 @@ def main() -> None:
     if os.environ.get("MCP_TRANSPORT", "http") == "stdio":
         mcp.run(transport="stdio")
         return
+    # Local by default: the server does no auth, so it only listens on all
+    # interfaces when a hosting platform sets PORT, or when you set MCP_HOST.
+    default_host = "0.0.0.0" if os.environ.get("PORT") else "127.0.0.1"
     mcp.run(
         transport="http",
-        host=os.environ.get("MCP_HOST", "0.0.0.0"),
+        host=os.environ.get("MCP_HOST", default_host),
         port=int(os.environ.get("PORT") or os.environ.get("MCP_PORT", "8080")),
         path="/mcp",
     )
